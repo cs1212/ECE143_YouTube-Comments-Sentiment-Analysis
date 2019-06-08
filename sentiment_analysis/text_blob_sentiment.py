@@ -10,12 +10,13 @@ Used as:
     python text_blob_sentiment.py <name of folders>
 """
 
-DATA_DIR = '../data/'
-OUT_DIR = './textblob_data/'
 
 from textblob import TextBlob
 import sys
 import os
+
+DATA_DIR = os.path.join('..','data')
+OUT_DIR = os.path.join('.', 'textblob_data')
 
 def get_sentiment(s):
     """
@@ -52,13 +53,14 @@ if __name__ == "__main__":
     Automatically runs get_sentiment function for all comments stored in given directories.
     """
     for i in range(1, len(sys.argv)):
-        folder = sys.argv[i] + '/'
-        path = DATA_DIR + folder
+        folder = sys.argv[i]
+        path = os.path.join(DATA_DIR, folder)
         
         if not os.path.exists(OUT_DIR):
             os.makedirs(OUT_DIR)
         filelist = os.listdir(path)
-        outfd = open(OUT_DIR+sys.argv[i]+'.txt', 'w+')
+        fname = sys.argv[i] + '.txt'
+        outfd = open(os.path.join(OUT_DIR, fname), 'w+')
         try :
             print('Removing .DS_Store')
             filelist.remove('.DS_Store')
@@ -70,7 +72,7 @@ if __name__ == "__main__":
         print(filelist)
         for file in filelist:
             print("In file :", file)
-            fd = open(DATA_DIR + folder + file)
+            fd = open(os.path.join(DATA_DIR,folder, file))
             s = fd.readlines()
             fd.close()
             pos_sent, neg_sent = get_sentiment(s)

@@ -28,7 +28,7 @@ def get_cooking_data(path):
         
     """
     assert isinstance(path, str)
-    fileName = path + 'cooking.txt'
+    fileName =  os.path.join(path, 'cooking.txt')
     assert os.path.exists(fileName), 'File Doesn\'t exist'
     cooking = pd.read_csv(fileName, sep=", ",header=None, engine='python')
     cooking.columns = ['Creator','File','Positive','Negative','Gender','Country']
@@ -56,7 +56,7 @@ def get_influencer_data(path):
         
     """
     assert isinstance(path, str)
-    fileName = path + 'influencers.txt' 
+    fileName =  os.path.join(path, 'influencers.txt')
     assert os.path.exists(fileName), 'File Doesn\'t exist'
     influencers = pd.read_csv(fileName, sep=" ",header=None)
     influencers.columns = ['Creator','Positive','Negative']
@@ -84,7 +84,7 @@ def get_gaming_data(path):
         
     """
     assert isinstance(path, str)
-    fileName = path + 'gaming.txt'
+    fileName =  os.path.join(path, 'gaming.txt')
     assert os.path.exists(fileName), 'File Doesn\'t exist'
     gaming = pd.read_csv(fileName, sep=" ",header=None)
     gaming.columns = ['Creator','Positive','Negative']
@@ -132,7 +132,7 @@ def get_subscriber_counts(path, df):
     """
     assert isinstance(path, str)
     assert isinstance(df, pd.DataFrame), 'df must be of type DataFrame'
-    fileName = path + 'subscriber_count.txt'
+    fileName =  os.path.join(path, 'subscriber_count.txt')
     assert os.path.exists(fileName), 'File Doesn\'t exist'
     subs = pd.read_csv(fileName, sep=" ",header=None)
     subs.columns = ['Creator', 'Subscribers', 'Category']

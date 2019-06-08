@@ -12,8 +12,9 @@ Script to get subscriber of all users in users.txt.
 from bs4 import BeautifulSoup as bs
 import requests
 import re
+import os
 
-SRC_DIR = '../source_links/'
+SRC_DIR = os.path.join('..','source_links')
 
 ##body
 def get_subs(user, t):

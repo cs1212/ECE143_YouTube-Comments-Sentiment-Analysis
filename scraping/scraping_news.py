@@ -15,8 +15,8 @@ import os
 import time
 import sys
 
-SRC_DIR = '../source_links/'
-DATA_DIR = '../data/'
+SRC_DIR = os.path.join('..','source_links')
+DATA_DIR = os.path.join('..','data')
 
 def scrape(folder, file):
     """
@@ -34,6 +34,10 @@ def scrape(folder, file):
     Writes comments into file of given filename in data/folder/file/
 
     """
+    assert isinstance(folder, str)
+    assert isinstance(file, str)
+    in_path = os.path.join(SRC_DIR, folder, file)
+    assert os.path.exists(in_path)
     driver=webdriver.Chrome()
 
     fd = open(SRC_DIR + folder + file)
@@ -47,10 +51,10 @@ def scrape(folder, file):
         c += 1
         
         fname, link = d.split(' - ')
-        
-        if not os.path.exists(DATA_DIR + folder + file + '/'):
-            os.makedirs(DATA_DIR + folder + file + '/')
-        fd = open(DATA_DIR + folder + file + '/' + fname, "w+")
+        out_path = os.path.join(DATA_DIR, folder, file)
+        if not os.path.exists(out_path):
+            os.makedirs(out_path)
+        fd = open(os.path.join(out_path, fname), "w+")
 
         print("Getting link :", link)
         driver.get(link)
@@ -93,8 +97,8 @@ if __name__ == '__main__':
     Automatically gets all comments from link in directories given in source_links/
     """
     for i in range(1, len(sys.argv)):
-        folder = sys.argv[i] + '/'
-        path = SRC_DIR + folder
+        folder = sys.argv[i]
+        path = os.path.join(SRC_DIR, folder)
         filelist = os.listdir(path)
         try :
             print('Removing .DS_Store')

@@ -15,8 +15,8 @@ import os
 import time
 import sys
 
-SRC_DIR = '../source_links/'
-DATA_DIR = '../data/'
+SRC_DIR = os.path.join('..','source_links')
+DATA_DIR = os.path.join('..','data')
 
 def scrape(folder, file):
     """
@@ -36,17 +36,18 @@ def scrape(folder, file):
     """
     assert isinstance(folder, str)
     assert isinstance(file, str)
-    p = SRC_DIR + folder + file
-    assert os.path.exists(p)
+    in_path = os.path.join(SRC_DIR, folder, file)
+    assert os.path.exists(in_path)
     driver=webdriver.Chrome()
 
-    fd = open(p)
+    fd = open(in_path)
     links = fd.read().splitlines()
     fd.close()
     
-    if not os.path.exists(DATA_DIR + folder):
-        os.makedirs(DATA_DIR + folder)
-    fd = open(DATA_DIR + folder + file, "w+")
+    out_path = os.path.join(DATA_DIR, folder)
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
+    fd = open(os.path.join(out_path, file), "w+")
 
     c = 0
     for link in links:
@@ -94,8 +95,8 @@ if __name__ == '__main__':
     Automatically gets all comments from link in directories given in source_links/
     """
     for i in range(1, len(sys.argv)):
-        folder = sys.argv[i] + '/'
-        path = SRC_DIR + folder
+        folder = sys.argv[i]
+        path = os.path.join(SRC_DIR, folder)
         filelist = os.listdir(path)
         try :
             print('Removing .DS_Store')

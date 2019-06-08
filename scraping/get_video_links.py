@@ -6,7 +6,7 @@ Created on Tue May 14 21:59:01 2019
 
 Gets video links in from users.
 Used as:
-    python get_video_links.py <name> <type>
+    python get_video_links.py
 """
 ##imports
 from bs4 import BeautifulSoup as bs
@@ -14,7 +14,7 @@ import requests
 import sys
 import os
 
-SRC_DIR = '../source_links/'
+SRC_DIR = os.path.join('..','source_links')
 
 ##body
 def get_links(user, t):
@@ -55,16 +55,20 @@ def get_links(user, t):
 
 if __name__ == '__main__':
     """
-    Gets video links for user, type when called on terminal.
+    Gets video links for users in users.txt
     """
-    d = sys.argv[1]
-    user = sys.argv[2]
-    t = sys.argv[3]
-    links = get_links(user, t)
-    if not os.path.exists(SRC_DIR + d):
-        os.makedirs(SRC_DIR + d)
-    fd = open(SRC_DIR+d+'/'+user+'.txt', 'w+')
-    fd.write('\n'.join(links))
+    fd = open('users.txt')
+    lines = fd.readlines()
     fd.close()
-    print("Number of links :", len(links))
+    for line in lines:
+        user, t, d = line.split()
+        links = get_links(user, t)
+        path = os.path.join(SRC_DIR, d)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        user = user + '.txt'
+        fd = open(os.path.join(path, user), 'w+')
+        fd.write('\n'.join(links))
+        fd.close()
+        print("Number of links :", len(links))
     
